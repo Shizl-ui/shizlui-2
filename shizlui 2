@@ -21,7 +21,7 @@ chatGPTLabel.BackgroundTransparency = 1
 chatGPTLabel.Text = "Made with ChatGPT"
 chatGPTLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
 chatGPTLabel.Font = Enum.Font.SourceSans
-chatGPTLabel.TextSize = 14  -- Increased text size for the label
+chatGPTLabel.TextSize = 14
 chatGPTLabel.Parent = mainButton
 
 -- Function to show notifications
@@ -51,10 +51,10 @@ local shizlsFrame
 local function loadShizlsGUI()
     if not shizlsFrame then
         shizlsFrame = Instance.new("Frame")
-        shizlsFrame.Size = UDim2.new(0.5, 0, 0.5, 0)  -- Frame size
+        shizlsFrame.Size = UDim2.new(0.5, 0, 0.5, 0)
         shizlsFrame.Position = UDim2.new(0.25, 0, 0.25, 0)
         shizlsFrame.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
-        shizlsFrame.BackgroundTransparency = 0.3  -- Added transparency
+        shizlsFrame.BackgroundTransparency = 0.3
         shizlsFrame.BorderSizePixel = 0
         shizlsFrame.Parent = screenGui
         shizlsFrame.Draggable = true
@@ -67,8 +67,19 @@ local function loadShizlsGUI()
         header.Text = "Shizls GUI"
         header.TextColor3 = Color3.fromRGB(255, 255, 255)
         header.Font = Enum.Font.SourceSansBold
-        header.TextSize = 16  -- Header text size
+        header.TextSize = 16
         header.Parent = shizlsFrame
+
+        -- Version Label at the Top Left
+        local versionLabel = Instance.new("TextLabel")
+        versionLabel.Size = UDim2.new(0.1, 0, 0.05, 0)
+        versionLabel.Position = UDim2.new(0.01, 0, 0.01, 0)
+        versionLabel.BackgroundTransparency = 1
+        versionLabel.Text = "v1.4"
+        versionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        versionLabel.Font = Enum.Font.SourceSansBold
+        versionLabel.TextSize = 14
+        versionLabel.Parent = shizlsFrame
 
         -- Button Tab List with All Tabs (Ordered)
         local tabs = {
@@ -94,12 +105,13 @@ local function loadShizlsGUI()
             { Name = "Deku", URL = "https://pastebin.com/raw/CaXFZ2S2" },
             { Name = "UNIVERSAL", URL = "https://raw.githubusercontent.com/01iq/scripthub/refs/heads/main/solara" },
             { Name = "Gojo 5", URL = "https://raw.githubusercontent.com/skibiditoiletfan2007/BaldyToSorcerer/refs/heads/main/LatestV2.lua" },
-            { Name = "Freeze in Place", URL = nil },  -- Added Freeze in Place tab without URL
-            { Name = "Testbot", URL = "https://raw.githubusercontent.com/Shizl-ui/testbot/refs/heads/main/testbot" } -- Added Testbot tab
+            { Name = "Freeze in Place", URL = nil },
+            { Name = "Testbot", URL = "https://raw.githubusercontent.com/Shizl-ui/testbot/refs/heads/main/testbot" },
+            { Name = "Todo", URL = "https://paste.ee/r/Kd9uX" }
         }
 
         -- Positioning for Ordered Grid Layout
-        local buttonSize = UDim2.new(0.15, 0, 0.06, 0)  -- Adjusted button size
+        local buttonSize = UDim2.new(0.15, 0, 0.06, 0)
         local spacing = 0.02
         local row, col = 0, 0
 
@@ -111,39 +123,34 @@ local function loadShizlsGUI()
             tabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
             tabButton.Text = tab.Name
             tabButton.Font = Enum.Font.SourceSansBold
-            tabButton.TextSize = 14  -- Increased text size for better visibility
+            tabButton.TextSize = 14
             tabButton.Parent = shizlsFrame
 
             tabButton.MouseButton1Click:Connect(function()
                 if tab.URL then
-                    -- Run the script from the URL
                     loadstring(game:HttpGet(tab.URL, true))()
                     showNotification("Script runned.")
                 elseif tab.Name == "Freeze in Place" then
-                    -- Run the freeze script
                     local freezeScript = [[
                         local player = game.Players.LocalPlayer
                         local UserInputService = game:GetService("UserInputService")
 
-                        local freezeEnabled = false -- Tracks the freeze state
+                        local freezeEnabled = false
 
-                        -- Function to freeze the player (animations continue)
                         local function freezePlayer()
                             local character = player.Character
                             if character and character:FindFirstChild("HumanoidRootPart") then
-                                character.HumanoidRootPart.Anchored = true -- Freeze player position
+                                character.HumanoidRootPart.Anchored = true
                             end
                         end
 
-                        -- Function to unfreeze the player
                         local function unfreezePlayer()
                             local character = player.Character
                             if character and character:FindFirstChild("HumanoidRootPart") then
-                                character.HumanoidRootPart.Anchored = false -- Unfreeze player position
+                                character.HumanoidRootPart.Anchored = false
                             end
                         end
 
-                        -- Toggle freezing when the keybind (T) is pressed
                         UserInputService.InputBegan:Connect(function(input, isProcessed)
                             if not isProcessed then
                                 if input.KeyCode == Enum.KeyCode.T then
@@ -171,12 +178,12 @@ local function loadShizlsGUI()
     end
 end
 
--- Open Shizls GUI on Main Button Click
-local confirmed = false -- Confirmation state
+-- Open Shizls GUI on Main Button Click with Confirmation
+local confirmed = false
 mainButton.MouseButton1Click:Connect(function()
     if not confirmed then
         showNotification("Are you sure?")
-        confirmed = true -- Set confirmation to true
+        confirmed = true
     else
         loadShizlsGUI()
         showNotification("Your wish has been granted.")
